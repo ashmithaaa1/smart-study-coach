@@ -13,6 +13,7 @@ function renderTasks() {
 
     tasks.forEach((task, index) => {
         const li = document.createElement("li");
+        li.classList.add('task-item');
 
         if (task.completed) completedCount++;
 
@@ -25,6 +26,11 @@ function renderTasks() {
         `;
 
         list.appendChild(li);
+
+        // trigger animation
+        setTimeout(() => {
+            li.classList.add('visible');
+        }, 10);
     });
 
     document.getElementById("progress").innerText = completedCount;
@@ -58,6 +64,10 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timer);
             alert("Pomodoro Session Complete! 🎉");
+            document.getElementById('timer').classList.add('finished');
+            setTimeout(() => {
+                document.getElementById('timer').classList.remove('finished');
+            }, 3000);
             timeLeft = 1500;
         } else {
             timeLeft--;
@@ -91,15 +101,22 @@ const motivationalMessages = [
 ];
 
 function generateMotivation() {
+    const el = document.getElementById("aiMessage");
     const randomIndex = Math.floor(Math.random() * motivationalMessages.length);
-    document.getElementById("aiMessage").innerText =
-        motivationalMessages[randomIndex];
+    el.classList.add('fade');
+    setTimeout(() => {
+        el.innerText = motivationalMessages[randomIndex];
+        el.classList.remove('fade');
+    }, 200);
 }
 
 renderTasks();
 updateTimer();
 document.getElementById("focusBtn").addEventListener("click", function () {
+    const btn = document.getElementById("focusBtn");
     document.body.classList.toggle("focus-active");
+    btn.classList.add('active');
+    setTimeout(() => btn.classList.remove('active'), 500);
 });
 let xp = 0;
 let streak = 0;
@@ -127,7 +144,12 @@ document.getElementById("generatePlan").addEventListener("click", function () {
                "📝 Revise key concepts\n" +
                "🧠 Practice 5 problems";
 
-    document.getElementById("studyPlan").innerText = plan;
+    const planEl = document.getElementById("studyPlan");
+    planEl.classList.add('fade');
+    setTimeout(() => {
+        planEl.innerText = plan;
+        planEl.classList.remove('fade');
+    }, 200);
 });
 
 
